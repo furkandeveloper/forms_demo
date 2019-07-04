@@ -25,6 +25,8 @@ class HomePageState extends State{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // bottom overflowed hatası için çözüm;
+      resizeToAvoidBottomPadding: false,
       appBar: AppBar(
         title: Text("Form Validation Project",textDirection: TextDirection.ltr,),
       ),

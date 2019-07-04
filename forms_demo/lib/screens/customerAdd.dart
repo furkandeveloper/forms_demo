@@ -1,15 +1,21 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:forms_demo/mixins/validation_mixin.dart';
+import 'package:forms_demo/models/customer.dart';
 
 class CustomerAdd extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => CustomerAddState();
 }
+
 // with anahtar kelimesi ile bu class'ın içerisinde ValidationMixin class'ına ait fonksiyonları kullan demektir
-class CustomerAddState extends State with ValidationMixin{
+class CustomerAddState extends State with ValidationMixin {
+  // customer modeline verilerimizi set edecez
+  final Customer customer = new Customer();
+
+  String data = "";
   // formun anahtarını oluşturduk. yoksa hangi form olduğunu bilemeyiz
-  final formKey =GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -36,7 +42,11 @@ class CustomerAddState extends State with ValidationMixin{
                   padding: const EdgeInsets.all(5.0),
                   child: passwordNameField(),
                 ),
-                submitButton()
+                submitButton(),
+                Text(
+                  data,
+                  textDirection: TextDirection.ltr,
+                )
               ],
             ),
           ),
@@ -48,7 +58,10 @@ class CustomerAddState extends State with ValidationMixin{
   Widget firstNameField() {
     return TextFormField(
       // validationMixin classındaki metoda gönderir parametre göndermeye gerek yok
-       validator: validateFirstName,
+      validator: validateFirstName,
+      onSaved: (String value) {
+        customer.firstName = value;
+      },
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "First Name",
@@ -62,6 +75,9 @@ class CustomerAddState extends State with ValidationMixin{
 
   Widget lastNameField() {
     return TextFormField(
+      onSaved: (String value) {
+        customer.lastName = value;
+      },
       validator: validateLastName,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
@@ -76,6 +92,9 @@ class CustomerAddState extends State with ValidationMixin{
 
   Widget emailNameField() {
     return TextFormField(
+      onSaved: (String value) {
+        customer.eMail = value;
+      },
       validator: validateEmail,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -90,6 +109,9 @@ class CustomerAddState extends State with ValidationMixin{
 
   Widget passwordNameField() {
     return TextFormField(
+      onSaved: (String value) {
+        customer.passWord = value;
+      },
       validator: validatePassword,
       // şifre 1 sn sonra yıldız olacak
       obscureText: true,
@@ -108,8 +130,28 @@ class CustomerAddState extends State with ValidationMixin{
       child: Text("Ekle"),
       onPressed: () {
         // formun validasyonu başlayacak
-        formKey.currentState.validate();
+        bool result = formKey.currentState.validate();
+        if (result) {
+          // on saved metodlarını çalıştır
+          formKey.currentState.save();
+          saveCustomer(customer);
+        }
       },
     );
+  }
+
+  void saveCustomer(Customer customer) {
+    if (customer != null) {
+      setState(() {
+        data = "Validation Success and Saved Customer" + "\n" "First Name : " +
+            customer.firstName + "\n"+
+            "Last Name :" +
+            customer.lastName + "\n"+
+            "Email:" +
+            customer.eMail + "\n"+
+            "Pass: " +
+            customer.passWord;
+      });
+    }
   }
 }
