@@ -43,6 +43,7 @@ class CustomerAddState extends State {
 
   Widget firstNameField() {
     return TextFormField(
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "First Name",
         hintText: "Jhon",
@@ -55,6 +56,7 @@ class CustomerAddState extends State {
 
   Widget lastNameField() {
     return TextFormField(
+      keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "Last Name",
         hintText: "Doe",
@@ -67,6 +69,7 @@ class CustomerAddState extends State {
 
   Widget emailNameField() {
     return TextFormField(
+      keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         labelText: "Email",
         hintText: "mail@gmail.com",
@@ -79,6 +82,8 @@ class CustomerAddState extends State {
 
   Widget passwordNameField() {
     return TextFormField(
+      // şifre 1 sn sonra yıldız olacak
+      obscureText: true,
       decoration: InputDecoration(
         labelText: "Password",
         hintText: "****",
