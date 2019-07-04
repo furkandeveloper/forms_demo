@@ -1,12 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:forms_demo/mixins/validation_mixin.dart';
 
 class CustomerAdd extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => CustomerAddState();
 }
-
-class CustomerAddState extends State {
+// with anahtar kelimesi ile bu class'ın içerisinde ValidationMixin class'ına ait fonksiyonları kullan demektir
+class CustomerAddState extends State with ValidationMixin{
   // formun anahtarını oluşturduk. yoksa hangi form olduğunu bilemeyiz
   final formKey =GlobalKey<FormState>();
   @override
@@ -46,11 +47,8 @@ class CustomerAddState extends State {
 
   Widget firstNameField() {
     return TextFormField(
-       validator: (String value){
-        if (value.length<2) {
-          return "First Name at least 2 character sets. ";
-        }
-      },
+      // validationMixin classındaki metoda gönderir parametre göndermeye gerek yok
+       validator: validateFirstName,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "First Name",
@@ -64,6 +62,7 @@ class CustomerAddState extends State {
 
   Widget lastNameField() {
     return TextFormField(
+      validator: validateLastName,
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "Last Name",
@@ -77,6 +76,7 @@ class CustomerAddState extends State {
 
   Widget emailNameField() {
     return TextFormField(
+      validator: validateEmail,
       keyboardType: TextInputType.emailAddress,
       decoration: InputDecoration(
         labelText: "Email",
@@ -90,6 +90,7 @@ class CustomerAddState extends State {
 
   Widget passwordNameField() {
     return TextFormField(
+      validator: validatePassword,
       // şifre 1 sn sonra yıldız olacak
       obscureText: true,
       decoration: InputDecoration(
