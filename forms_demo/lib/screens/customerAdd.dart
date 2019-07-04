@@ -7,6 +7,8 @@ class CustomerAdd extends StatefulWidget {
 }
 
 class CustomerAddState extends State {
+  // formun anahtarını oluşturduk. yoksa hangi form olduğunu bilemeyiz
+  final formKey =GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -14,6 +16,7 @@ class CustomerAddState extends State {
       child: Container(
         child: Center(
           child: Form(
+            key: formKey,
             child: Column(
               children: <Widget>[
                 Padding(
@@ -43,6 +46,11 @@ class CustomerAddState extends State {
 
   Widget firstNameField() {
     return TextFormField(
+       validator: (String value){
+        if (value.length<2) {
+          return "First Name at least 2 character sets. ";
+        }
+      },
       keyboardType: TextInputType.text,
       decoration: InputDecoration(
         labelText: "First Name",
@@ -97,7 +105,10 @@ class CustomerAddState extends State {
   Widget submitButton() {
     return FlatButton(
       child: Text("Ekle"),
-      onPressed: () {},
+      onPressed: () {
+        // formun validasyonu başlayacak
+        formKey.currentState.validate();
+      },
     );
   }
 }
